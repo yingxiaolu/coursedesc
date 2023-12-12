@@ -1,0 +1,34 @@
+version: "3.9"
+services:
+  coursedesc:
+    build: .
+    image: coursedesc
+    restart: always
+    volumes:
+      - "./:/app:rw"
+    command:
+      - /bin/sh
+      - -c
+      - "cd /app
+        && chmod 777 setup.sh
+        && ./setup.sh"
+    ports:
+      - "8763:8763"
+    environment:
+      - PYTHONUNBUFFERED=1 #在标准输出和标准错误中禁用缓冲，即实时输出，有助于在容器中查看实时日志。
+      - MLIR_CRASH_REPRODUCER_DIRECTORY=enable  #可能用于启用 MLIR Crash Reproducer Directory，允许在编译器崩溃时生成调试信息。
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [ gpu ]
+    container_name: "coursedesc"
+    networks:
+      - app_net
+
+networks:
+  app_net:
+
+
