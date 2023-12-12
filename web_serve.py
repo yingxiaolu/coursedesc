@@ -3,8 +3,9 @@ from collect_info import crawler_links,get_similary_course_desc
 # from query_sql import get_similary_course_desc
 from flask import Flask, request, jsonify
 from icecream import ic
-
+from flask_cors import CORS
 app = Flask(__name__)
+CORS(app, supports_credentials=True)
 
 @app.route('/api', methods=['POST'])
 def process_api_request():
