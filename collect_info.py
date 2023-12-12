@@ -7,9 +7,21 @@ import pickle
 from bs4 import BeautifulSoup
 # from utils.web_sql_crawler import  search_info,crawler_web_paragraphs
 # from utils.sentence_compare import sentence_compare
-from sentence_transformers import SentenceTransformer, util
-model = SentenceTransformer(r'.\all-MiniLM-L6-v2')
 requests.packages.urllib3.disable_warnings()
+from sentence_transformers import SentenceTransformer, util
+#检测当前是不是linux
+import platform
+if platform.system()=='Linux':
+    model_path=r'./all-MiniLM-L6-v2'
+    sqldata_path=r'./sql_data/sql_data.pkl'
+else:
+    model_path=r'.\all-MiniLM-L6-v2'
+    sqldata_path=r'.\sql_data\sql_data.pkl'
+model = SentenceTransformer(model_path)
+
+with open(sqldata_path,'rb') as f:
+    sql_data=pickle.load(f)
+
 def crawler_web_paragraphs(link)-> list[str]:
     '''
     功能: 爬取网页中的各级段落和有序无序列表中的文本, 并清洗返回
@@ -99,8 +111,7 @@ def crawler_links(name_link_object)-> list[dict]:
         name_paragraphs.append({'name': name,'desc': paragraph})
     return name_paragraphs
 
-with open(r'sql_data\sql_data.pkl','rb') as f:
-    sql_data=pickle.load(f)
+
 corpus_embed=[item[2] for item in sql_data]
 def get_similary_course_desc(course_name)->(str,str):
     '''
