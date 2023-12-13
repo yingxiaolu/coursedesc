@@ -76,7 +76,7 @@ def crawler_links(name_link_object)-> list[dict]:
     从link找到name相关的描述部分, 要求这部分扣去name仍高相关, 长度够长
     
     输入[{'name': name, 'link': link}...]
-    输出[{'name': name,'paragraph': paragraph}...]
+    输出[{'name': name,'desc': desc}...]
     '''
     name_paragraphs = []
     for name_link in name_link_object:

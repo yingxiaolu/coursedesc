@@ -11,28 +11,26 @@ CORS(app, supports_credentials=True)
 def process_api_request():
     # 获取 POST 请求的 JSON 数据
     request_data = request.get_json()#需要一个列表字典
-    course_link=[]
+    #[{ course: "", course_link: "" }]
+    course_link=[]#
     # 检查请求中是否包含 "course_name" 字段
     for item in request_data:
-        for k,v in item.items():
-            course_link.append({"name":k,"link":v})
+        course_link.append({'name':item['course'],'link':item['course_link']})
     ic()
     ic(course_link)
-    crawled_data=crawler_links(course_link)#[{'name': name,'paragraph': paragraph}...]
+    crawled_data=crawler_links(course_link)#[{'name': name,'desc': desc}...]
     response_data = []
     for data in crawled_data:
-        response_data.append({data['name']:data['desc'],"code":200})
+        response_data.append({"course":data['name'],"desc":data['desc'],"code":200})
     for dic in response_data:
-        for k,v in dic.items():
-            if k!='code' and len(v)<10:
-                dic[k]=get_similary_course_desc(k)[1]
+        if len(dic['desc'])<10:
+                dic["desc"]=get_similary_course_desc(dic['course'])[1]
                 dic['code']=404
-                    
     ic(response_data)
     return jsonify(response_data)
 
 if __name__ == '__main__':
     # 启动 Flask 应用
     ic('hello, start flask app')
-    app.run(debug=True)
+    app.run(debug=True,port=8763)
     pass
