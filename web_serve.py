@@ -18,14 +18,16 @@ def process_api_request():
             course_link.append({"name":k,"link":v})
     ic()
     ic(course_link)
-    crawled_data=crawler_links(course_link)
-    # ic(crawled_data)
-    for dic in crawled_data:
-        if len(dic['desc'])<10:
-            dic['desc']=get_similary_course_desc(dic['name'])[1]
+    crawled_data=crawler_links(course_link)#[{'name': name,'paragraph': paragraph}...]
     response_data = []
-    for dic in crawled_data:
-        response_data.append({dic['name']:dic['desc']})
+    for data in crawled_data:
+        response_data.append({data['name']:data['desc'],"code":200})
+    for dic in response_data:
+        for k,v in dic.items():
+            if k!='code' and len(v)<10:
+                dic[k]=get_similary_course_desc(k)[1]
+                dic['code']=404
+                    
     ic(response_data)
     return jsonify(response_data)
 

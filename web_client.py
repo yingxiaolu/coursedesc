@@ -4,7 +4,7 @@ import requests
 import json
 from icecream import ic
 # 目标端口的URL
-url = r'http://127.0.0.1:8763/api'  # 请替换为实际的目标端口和路由
+url = r'http://127.0.0.1:5000/api'  # 请替换为实际的目标端口和路由
 
 # 要发送的 JSON 数据
 data = [{"Advanced Perception for Intelligent Robotics": "http://www.ee.cuhk.edu.hk/en-gb/curriculum/mphil-phd-programme/course-list/eleg5600-advanced-perception-for-intelligent-robotics"},
